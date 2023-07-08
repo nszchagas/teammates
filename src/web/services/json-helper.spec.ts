@@ -1,6 +1,6 @@
 import { JsonHelper } from './json-helper'
-import { FeedbackSessionLogEntry, FeedbackSessionLogType, JoinState, Student } from '../types/api-output';
-import { InstructorPermissionSet } from '../types/api-request';
+import { Course, FeedbackSessionLogEntry, FeedbackSessionLogType, JoinState, NotificationTargetUser, Notifications, Student } from '../types/api-output';
+import { InstructorPermissionSet, NotificationStyle } from '../types/api-request';
 
 describe("JsonHelper", () => {
 
@@ -123,6 +123,52 @@ describe("JsonHelper", () => {
 
         expect(JsonHelper.parseObjectToJSON(input)).toEqual(JSON.stringify(input))
     })
+
+    it("Should parse array attribute", () => {
+        const input: Notifications = {
+            notifications: [
+                {
+                    notificationId: "41841",
+                    startTimestamp: 1688826966,
+                    endTimestamp: 1688827486,
+                    createdAt: 1688826999,
+                    style: NotificationStyle.WARNING,
+                    targetUser: NotificationTargetUser.STUDENT,
+                    title: "Activity wanting attention",
+                    message: "Don't forget to fill your feedback sessions.",
+                    shown: true,
+                },
+                {
+                    notificationId: "1894",
+                    startTimestamp: 1688812547,
+                    endTimestamp: 1688812458,
+                    createdAt: 1688812200,
+                    style: NotificationStyle.DANGER,
+                    targetUser: NotificationTargetUser.INSTRUCTOR,
+                    title: "Invalid Submission",
+                    message: "The data submitted for course was invalid.",
+                    shown: false,
+                }
+            ]
+        }
+        expect(JsonHelper.parseObjectToJSON(input)).toEqual(JSON.stringify(input))
+    })
+
+
+    it("Should parse an array of objects", () => {
+        const input: Course[] = [{
+            courseId: "Testes-2023-1",
+            courseName: "Testes de Software",
+            timeZone: "America/Sao Paulo",
+            institute: "UnB",
+            creationTimestamp: 1688827796,
+            deletionTimestamp: -1,
+        }]
+
+
+        expect(JsonHelper.parseObjectToJSON(input)).toEqual(JSON.stringify(input))
+    })
+
 
 
 })
